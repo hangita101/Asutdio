@@ -88,6 +88,6 @@ class register_user(View):
 # 		return render(request, 'register.html', {'form':form})
 
 def product(request,pk):
-    products = Product.objects.get(id=pk)
+    product = Product.objects.get(id=pk)
     
-    return render(request,'product.html',{'products':products})
+    return render(request,'product.html',{'product':product})
