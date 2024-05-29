@@ -15,6 +15,7 @@ class Category(models.Model):
 
 class Anime(models.Model):
     name=models.CharField(max_length=50)
+    image=models.ImageField(upload_to='uploads/anime/',blank=True,null=True)
     
     def __str__(self):
         return self.name

@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm
+from .models import Category,Anime
+
 
 # Create your views here.
 def home(request):
@@ -91,3 +93,30 @@ def product(request,pk):
     product = Product.objects.get(id=pk)
     
     return render(request,'product.html',{'product':product})
+
+def category(request,foo):
+    #Grab catagory
+    try:
+        category=Category.objects.get(name=foo)
+        products=Product.objects.filter(category=category)
+        return render(request,'category.html',{'products':products,'category':category})
+    except:
+        messages.error(request,("That category does not exists"))
+        return redirect('home')
+    
+    
+def anime_based(request,foo):
+    
+    
+    if foo=='all':
+        anime=list(Anime.objects.exclude(name="NONE"))
+        return render(request,'anime.html',{'animes':anime})
+    else:
+        #Grab catagory
+        try:
+            anime=Anime.objects.get(name=foo)
+            products=Product.objects.filter(anime=anime)
+            return render(request,'anime_based.html',{'products':products,'anime':anime})
+        except:
+            messages.error(request,("That anime does not exists"))
+            return redirect('home')
