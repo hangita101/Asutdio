@@ -11,6 +11,13 @@ class Category(models.Model):
     class Mets:
         verbose_name_plural = 'categories'
 
+
+
+class Anime(models.Model):
+    name=models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
 class Customer(models.Model):
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
@@ -28,6 +35,12 @@ class Product(models.Model):
     category=models.ForeignKey(Category,on_delete=models.CASCADE,default=1)
     description=models.CharField(max_length=250,default='',blank=True,null=True)
     image=models.ImageField(upload_to='uploads/product/')
+    anime=models.ForeignKey(Anime,on_delete=models.CASCADE,blank=True,null=True)
+    # Add Sale Stuff
+    
+    is_sale= models.BooleanField(default=False)
+    sale_price=models.DecimalField(default=0,decimal_places=2,max_digits=8)
+    
     
     def __str__(self):
         return f"{self.name}"
@@ -58,3 +71,8 @@ class Size(models.Model):
     ]
     sizes = models.CharField(max_length=2, choices=SIZE_CHOICES)
     count=models.IntegerField(default=0)
+    
+    def __str__(self):
+        return self.sizes
+    
+    
