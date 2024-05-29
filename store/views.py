@@ -86,3 +86,8 @@ class register_user(View):
 # 			return redirect('register')
 # 	else:
 # 		return render(request, 'register.html', {'form':form})
+
+def product(request,pk):
+    products = Product.objects.get(id=pk)
+    
+    return render(request,'product.html',{'products':products})
