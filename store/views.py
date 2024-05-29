@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.views import View
 from django.http import HttpRequest
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 def home(request):
@@ -24,7 +24,10 @@ class login_user(View):
     def post(self,request:HttpRequest):
         username=request.POST['username']
         password=request.POST['password']
+                    
+        
         user=authenticate(request,username=username,password=password)
+        
         
         if user is not None:
             login(request,user)
