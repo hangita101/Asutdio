@@ -3,47 +3,51 @@
 
 {% block content %}
 <div class="container">
-    <br><br><br><br>
-    <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <center>
-            <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text">{{ product.anime  }}</p>
-            
-              <p class="card-text">{{ product.category  }}</p>
-            
-                {% if product.is_sale %}
-                
-          <!-- Sale -->
-          <div class="d-flex justify-content-center small text-warning mb-2">
-            <div class="bi-star-fill"></div>
-            &nbsp;&nbsp;Sale!&nbsp;&nbsp;
-            <div class="bi-star-fill"></div>
-        </div>
-
-        <!-- Product price-->
-        <strike>
-            ${{ product.price }}
-        </strike>
-        &nbsp;
-        ${{ product.sale_price }}
-
-                {%else%}
-                ${{ product.price }}
-
-                {%endif%}
-                <br>
-                <br><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
-            </div>
-        </center>
-          </div>
-        </div>
+  <br><br><br><br>
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
       </div>
+      <div class="col-md-8">
+        <center>
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.anime }}</p>
+
+            <p class="card-text">{{ product.category }}</p>
+
+            {% if product.is_sale %}
+
+            <!-- Sale -->
+            <div class="d-flex justify-content-center small text-warning mb-2">
+              <div class="bi-star-fill"></div>
+              &nbsp;&nbsp;Sale!&nbsp;&nbsp;
+              <div class="bi-star-fill"></div>
+            </div>
+
+            <!-- Product price-->
+            <strike>
+              ${{ product.price }}
+            </strike>
+            &nbsp;
+            ${{ product.sale_price }}
+
+            {%else%}
+            ${{ product.price }}
+
+            {%endif%}
+            <br>
+            <br><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
+            <button class="btn btn-secondary" id="add-cart" value="{{ product.id }}">Add To Cart</button>
+          </div>
+
+
+
+        </center>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -51,4 +55,31 @@
 <br><br><br><br>
 <br><br><br><br><br><br><br><br>
 <br>
+<script>
+  // Check  if pressed
+
+  $(document).on('click', '#add-cart', function (e) {
+    e.preventDefault();
+    $.ajax(
+      {
+        type: 'POST',
+        url: "{% url 'cart_add' %}",
+        data: {
+          product_id: $('#add-cart').val(),
+          csrfmiddlewaretoken:"{{ csrf_token }}",
+          action:"post"
+        },
+        success:function(json){
+          console.log(json)
+        },
+        error:function(xhr,errmsg,err){
+
+        }
+      }
+    )
+
+  })
+
+</script>
+
 {% endblock %}
