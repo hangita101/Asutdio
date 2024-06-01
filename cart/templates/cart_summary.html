@@ -1,86 +1,64 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-
-<!-- Header-->
-<header class="bg-dark py-5">
+  <!-- Header -->
+  <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shoping Cart</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Your Cart</p>
-        </div>
+      <div class="text-center text-white">
+        <h1 class="display-4 fw-bolder">Shoping Cart</h1>
+        <p class="lead fw-normal text-white-50 mb-0">Your Cart</p>
+      </div>
     </div>
-</header>
-<div class="container">
-    <br><br><br>
-
+  </header>
+  <div class="container">
+    <br /><br /><br />
 
     {% if cart_products %}
+      {% for product in cart_products %}
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="..." />
+            </div>
+            <div class="col-md-8">
+              <center>
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">{{ product.anime }}</p>
 
-    {% for product in  cart_products %}
-    <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <center>
-              <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">{{ product.anime }}</p>
-    
-                <p class="card-text">{{ product.category }}</p>
-    
-                {% if product.is_sale %}
-    
-                <!-- Sale -->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                  <div class="bi-star-fill"></div>
-                  &nbsp;&nbsp;Sale!&nbsp;&nbsp;
-                  <div class="bi-star-fill"></div>
+                  <p class="card-text">{{ product.category }}</p>
+
+                  {% if product.is_sale %}
+                    <!-- Sale -->
+                    <div class="d-flex justify-content-center small text-warning mb-2">
+                      <div class="bi-star-fill"></div>&nbsp;&nbsp;Sale!&nbsp;&nbsp;<div class="bi-star-fill"></div>
+                    </div>
+
+                    <!-- Product price -->
+                    <strike>${{ product.price }}</strike>
+                    &nbsp; Rs{{ product.sale_price }}
+                  {% else %}
+                    Rs{{ product.price }}
+                  {% endif %}
+                  <br />
+                  <br />
+
+                  <br /><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
                 </div>
-    
-                <!-- Product price-->
-                <strike>
-                  ${{ product.price }}
-                </strike>
-                &nbsp;
-                Rs{{ product.sale_price }}
-    
-                {%else%}
-                Rs{{ product.price }}
-    
-                {%endif%}
-                <br>
-                <br><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
-              </div>
-    
-    
-    
-            </center>
+              </center>
+            </div>
           </div>
         </div>
-      </div>
-
-
-
-
-    {% endfor %}
-
-{% else %}
+      {% endfor %}
+    {% else %}
       <div class="container">
-        <center>
-        Empty Cart
-    </center>
-    </div>
-{% endif %}
+        <center>Empty Cart</center>
+      </div>
+    {% endif %}
+  </div>
 
-
-</div>
-
-
-<!-- Section-->
-<br><br><br>
-<br><br><br>
-<br><br><br>
+  <!-- Section -->
+  <br /><br /><br />
+  <br /><br /><br />
+  <br /><br /><br />
 {% endblock %}

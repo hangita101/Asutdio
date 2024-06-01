@@ -9,24 +9,32 @@ from django.http import HttpRequest
 def cart_summary(request):
     cart=Cart(request)
     cart_products=cart.get_prods()
-    return render(request,"cart_summary.html",{"cart_products":cart_products})
+    quantities =cart.get_qunats()
+    return render(request,"cart_summary.html",{"cart_products":cart_products,'quantities':quantities})
 
 
 
 class cart_add(View):
     def post(self,request:HttpRequest):
         cart=Cart(request)
-        product_id= int(request.POST.get('product_id'))
-            
-            # lookup
-        product=get_object_or_404(Product,id=product_id)
-            
-        cart.add(product=product)            
+        product_id = int(request.POST.get('product_id'))
+        product_qty = int(request.POST.get('product_qty'))
+        product_id = int(request.POST.get('product_id'))
+        product_qty = int(request.POST.get('product_qty'))
 
-        cart_quantity=cart.__len__()
-        
-        
-        return JsonResponse({'productName':product.name,'qty':cart_quantity})
+		# lookup product in DB
+        product = get_object_or_404(Product, id=product_id)
+		
+		# Save to session
+        cart.add(product=product, quantity=product_qty)
+
+		# Get Cart Quantity
+        cart_quantity = cart.__len__()
+
+		# Return resonse
+		# response = JsonResponse({'Product Name: ': product.name})
+        response = JsonResponse({'qty': cart_quantity})
+        return response            
                 
 
 def cart_delete(request):

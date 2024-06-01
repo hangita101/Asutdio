@@ -1,14 +1,12 @@
-{% extends "base.html" %}
-
-
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
-  <br><br><br><br>
+  <br /><br /><br /><br />
   <div class="card mb-3">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="..." />
       </div>
       <div class="col-md-8">
         <center>
@@ -19,71 +17,68 @@
             <p class="card-text">{{ product.category }}</p>
 
             {% if product.is_sale %}
-
             <!-- Sale -->
             <div class="d-flex justify-content-center small text-warning mb-2">
-              <div class="bi-star-fill"></div>
-              &nbsp;&nbsp;Sale!&nbsp;&nbsp;
-              <div class="bi-star-fill"></div>
+              <div class="bi-star-fill"></div>&nbsp;&nbsp;Sale!&nbsp;&nbsp;<div class="bi-star-fill"></div>
             </div>
 
-            <!-- Product price-->
-            <strike>
-              ${{ product.price }}
-            </strike>
-            &nbsp;
-            Rs{{ product.sale_price }}
-
-            {%else%}
+            <!-- Product price -->
+            <strike>${{ product.price }}</strike>
+            &nbsp; Rs{{ product.sale_price }}
+            {% else %}
             Rs{{ product.price }}
+            {% endif %}
+            <br /><br />
+            <div class="row justify-content-center">
+              <div class="col-md-2">Quantity:</div>
+                          <div class="col-md-2">
+                          <select class="form-select form-select-sm" id="qty-cart">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                          </select>
+                          </div>
+                      </div>
+            <br /><br />
+            <br /><br />
 
-            {%endif%}
-            <br>
-            <br><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
+            <br /><a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
             <button class="btn btn-secondary" id="add-cart" value="{{ product.id }}">Add To Cart</button>
           </div>
-
-
-
         </center>
       </div>
     </div>
   </div>
 </div>
 
-
-<br><br><br><br>
-<br><br><br><br>
-<br><br><br><br><br><br><br><br>
-<br><br><br>
+<br /><br /><br /><br />
+<br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br />
 <script>
   // Check  if pressed
 
   $(document).on('click', '#add-cart', function (e) {
-    console.log("CLICKED");
-    e.preventDefault();
-    $.ajax(
-      {
-        type: 'POST',
-        url: "{% url 'cart_add' %}",
-        data: {
-          product_id: $('#add-cart').val(),
-          csrfmiddlewaretoken:"{{ csrf_token }}",
-          action:"post"
-        },
-        success:function(json){
-          //console.log(json);
-          //console.log("Success")
-          document.getElementById('cart_quantity').textContent = json.qty
-        },
-        error:function(xhr,errmsg,err){
-          console.log("ERROR");
-        }
+    console.log('CLICKED')
+    e.preventDefault()
+    $.ajax({
+      type: 'POST',
+      url: "{% url 'cart_add' %}",
+      data: {
+        product_id: $('#add-cart').val(),
+        product_qty: $('#qty-cart option:selected').text(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        action: 'post'
+      },
+      success: function (json) {
+        //console.log(json);
+        //console.log("Success")
+        document.getElementById('cart_quantity').textContent = json.qty
+      },
+      error: function (xhr, errmsg, err) {
+        console.log('ERROR')
       }
-    )
-
+    })
   })
-
 </script>
-
 {% endblock %}
