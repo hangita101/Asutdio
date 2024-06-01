@@ -39,7 +39,7 @@ class login_user(View):
             messages.success(request,("Successifully Logged In"))
             return redirect('home')
         else:
-            
+
             messages.error(request,("There was an error during logging in "))
             return redirect('login')
     
@@ -120,3 +120,10 @@ def anime_based(request,foo):
         except:
             messages.error(request,("That anime does not exists"))
             return redirect('home')
+        
+class UserPage(View):
+    def get(self,request:HttpRequest):
+         
+        
+        return render(request,'userpage.html',{})
+    
