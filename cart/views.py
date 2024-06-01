@@ -18,6 +18,7 @@ def cart_summary(request):
 
 class cart_add(View):
     def post(self,request:HttpRequest):
+        
         cart=Cart(request)
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
