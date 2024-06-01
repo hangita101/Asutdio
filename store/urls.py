@@ -13,7 +13,9 @@ urlpatterns = [
     path('anime/<str:foo>',views.anime_based,name='anime'),
     
     
-    path('user/',views.UserPage.as_view(),name='userpage')
+    path('user/',views.UserPage.as_view(),name='userpage'),
+    path('search/', views.search.as_view(), name='search'),
+
     
     
 ]

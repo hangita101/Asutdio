@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm
 from .models import Category,Anime
+from django.db.models import Q
 
 
 # Create your views here.
@@ -20,6 +21,18 @@ def home(request):
 def about(request):
     return render(request,'about.html',{})
 
+class search(View):
+    def get(self,request):
+        return render(request, "search.html", {})	
+
+    def post(self,request):
+        searched = request.POST['searched']
+        searched = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
+        if not searched:
+            messages.success(request, "That Product Does Not Exist...Please try Again.")
+            return render(request, "search.html", {})
+        else:
+            return render(request, "search.html", {'searched':searched})
 
 
 class login_user(View):
@@ -69,25 +82,6 @@ class register_user(View):
             messages.success(request, (form.errors))
             return redirect('register')
     
-# def register_user(request):
-# 	form = SignUpForm()
-# 	if request.method == "POST":
-# 		form = SignUpForm(request.POST)
-# 		if form.is_valid():
-# 			form.save()
-# 			username = form.cleaned_data['username']
-# 			password = form.cleaned_data['password1']
-# 			# log in user
-# 			user = authenticate(username=username, password=password)
-# 			login(request, user)
-# 			messages.success(request, ("Username Created"))
-# 			return redirect('home')
-# 		else:
-            
-# 			messages.success(request, (form.errors))
-# 			return redirect('register')
-# 	else:
-# 		return render(request, 'register.html', {'form':form})
 
 def product(request,pk):
     product = Product.objects.get(id=pk)
