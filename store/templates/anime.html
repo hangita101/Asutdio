@@ -9,25 +9,21 @@
 
 
             {% for anim in animes %}
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="object-fit-cover  card-img-top img-fluid"  src="{{ anim.image.url }}"  alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">{{ anim.name }}</h5>
-                            <!-- Product price-->
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                href="{% url 'anime' anim.name %}">View Product</a></div>
-                    </div>
+
+            <div class="card" style="width: 18rem;">
+                <center>
+                    <br>
+                <img src="{{ anim.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{ anim.name }}</h5>
+                  <p class="card-text"></p>
+                  <a href="{% url 'anime' anim.name %}" class="btn btn-primary">Go to Product's</a>
                 </div>
-            </div>
+            </center>
+              </div>
+
+
+
 
             {% endfor %}
 
